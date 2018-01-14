@@ -8,6 +8,8 @@ import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +28,7 @@ import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
 import com.example.xyzreader.data.UpdaterService;
 import com.example.xyzreader.utils.FontUtils;
+import com.example.xyzreader.utils.NetworkUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,6 +48,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private CoordinatorLayout coordinatorLayout;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -68,7 +72,13 @@ public class ArticleListActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_article_list);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
 
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Welcome to XYZReader!", Snackbar.LENGTH_LONG);
+        snackbar.show();
+
+        if(!NetworkUtils.hasNetwork(getApplicationContext()))
+            Snackbar.make(coordinatorLayout, "No internet connection", Snackbar.LENGTH_INDEFINITE).show();
 
         final View toolbarContainerView = findViewById(R.id.toolbar_container);
 
